@@ -1,4 +1,4 @@
-package controllers;
+package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Comment;
 import com.eigen.tensor.domain.entities.User;
