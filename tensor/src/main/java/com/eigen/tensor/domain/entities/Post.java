@@ -1,10 +1,10 @@
 package com.eigen.tensor.domain.entities;
 
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -18,5 +18,9 @@ public class Post {
     private String slug;
     private String title;
     private String content;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
 }

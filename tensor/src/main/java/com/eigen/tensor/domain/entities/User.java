@@ -12,6 +12,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -21,6 +22,7 @@ public class User {
     @Size(min = 3, max = 20)
     private String username;
     private String password;
+    @OneToMany(mappedBy = "author")
     private List<Post> posts;
 
     @Enumerated

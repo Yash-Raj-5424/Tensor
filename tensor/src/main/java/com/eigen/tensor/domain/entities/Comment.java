@@ -12,7 +12,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String content;
+    @ManyToOne
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
 }
