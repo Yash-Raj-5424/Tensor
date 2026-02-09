@@ -8,11 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PostService {
-    List<Post> getAllPost();
+    Post createPost(UUID authorId, Post post);
     Post getPostById(UUID id);
-    Post createPost(Post post);
+    List<Post> getAllPost();
     Post updatePost(UUID id, Post post);
-    void deletePost(UUID id);
+    Post publishPost(Post post);
+    void deletePost(UUID id, UUID userId);
 
 
 }

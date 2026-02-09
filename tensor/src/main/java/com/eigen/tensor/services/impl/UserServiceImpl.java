@@ -1,14 +1,14 @@
 package com.eigen.tensor.services.impl;
 
-import com.eigen.tensor.domain.entities.Post;
+
 import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.domain.entities.enums.Role;
 import com.eigen.tensor.exception.ResourceNotFoundException;
 import com.eigen.tensor.repositories.UserRepository;
 import com.eigen.tensor.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -17,29 +17,27 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public User getUserById(UUID id){
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
-    }
-
-    public List<Post> getAllPost(UUID autherId){
-        User author = this.getUserById(autherId);
-        return author.getPosts();
-    }
-
-    public User createUser(User user){
-        user.setId(null);
+    @Override
+    public User createUser(User user) {
+        if(user == null){
+            throw new IllegalArgumentException("User cannot be null");
+        }
+        user.setRole(Role.USER);
         return userRepository.save(user);
     }
 
-    public User updateUser(UUID id, User newUser){
-        User user = this.getUserById(id);
-        user.setUsername(newUser.getUsername());
-        user.setPassword(newUser.getPassword());
-
-        return user;
+    @Override
+    public User getUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
     }
 
-    public void deleteUser(UUID id){
-        userRepository.deleteById(id);
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
     }
 }
