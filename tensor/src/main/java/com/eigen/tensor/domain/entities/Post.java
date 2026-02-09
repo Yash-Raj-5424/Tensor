@@ -1,10 +1,13 @@
 package com.eigen.tensor.domain.entities;
 
 
+import com.eigen.tensor.domain.entities.enums.PostStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -15,12 +18,26 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    private String slug;
+    private UUID authorId;
+    @Column(nullable = false, length = 200)
     private String title;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
-    @ManyToOne
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    PostStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private User author;
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    User author;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    LocalDateTime createdAt;
+
+    @Column(nullable = false)
+    @UpdateTimestamp
+    LocalDateTime updatedAt;
 }
