@@ -11,5 +11,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-  jackson:
-    time-zone: UTC
