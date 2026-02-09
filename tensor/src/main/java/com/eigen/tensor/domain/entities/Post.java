@@ -18,7 +18,6 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false)
     private UUID id;
 
-    private UUID authorId;
     @Column(nullable = false, length = 200)
     private String title;
 

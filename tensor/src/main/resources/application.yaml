@@ -3,11 +3,11 @@ spring:
     name: tensor
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/tensorDb
+    url: jdbc:postgresql://localhost:5432/tensorDb?TimeZone=UTC
     username: postgres
     password: mishGill
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
