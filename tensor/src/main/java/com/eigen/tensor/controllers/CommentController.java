@@ -19,7 +19,7 @@ public class CommentController {
         return commentService.getCommentById(commentId);
     }
 
-    @GetMapping()
+    @GetMapping
     public List<Comment> getCommentsByPostId(@PathVariable UUID postId){
         return commentService.getCommentsByPostId(postId);
     }
