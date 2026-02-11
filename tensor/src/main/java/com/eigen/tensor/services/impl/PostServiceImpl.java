@@ -5,6 +5,7 @@ import com.eigen.tensor.domain.entities.Post;
 import com.eigen.tensor.domain.entities.User;
 import com.eigen.tensor.domain.entities.enums.PostStatus;
 import com.eigen.tensor.domain.entities.enums.Role;
+import com.eigen.tensor.exception.ResourceNotFoundException;
 import com.eigen.tensor.repositories.PostRepository;
 import com.eigen.tensor.services.PostService;
 import com.eigen.tensor.services.UserService;
@@ -42,13 +43,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsByAuthorname(String username) {
-        try{
-            User author = userService.getUserByUsername(username);
-        }catch (RuntimeException e){
-            throw new RuntimeException("Author not found with username: " + username);
-        }
-        return postRepository.findByAuthorname(username);
+    public List<Post> getPostsByUserId(UUID userId) {
+        return postRepository.findByAuthorId(userId);
     }
 
     @Override

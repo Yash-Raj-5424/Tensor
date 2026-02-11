@@ -33,9 +33,9 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/{username}/posts")
-    public List<Post> getPostsByUser(@PathVariable String username){
-        return postService.getPostsByAuthorname(username);
+    @GetMapping("/id/{id}/posts")
+    public List<Post> getPostsByUserId(@PathVariable UUID id){
+        return postService.getPostsByUserId(id);
     }
 
     @DeleteMapping("/{id}")
