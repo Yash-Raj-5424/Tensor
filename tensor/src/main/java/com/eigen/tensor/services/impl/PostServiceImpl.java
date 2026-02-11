@@ -42,6 +42,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getPostsByAuthorname(String username) {
+        try{
+            User author = userService.getUserByUsername(username);
+        }catch (RuntimeException e){
+            throw new RuntimeException("Author not found with username: " + username);
+        }
+        return postRepository.findByAuthorname(username);
+    }
+
+    @Override
     public Post updatePost(UUID id, Post post) {
         Post oldPost = getPostById(id);
         oldPost.setTitle(post.getTitle());

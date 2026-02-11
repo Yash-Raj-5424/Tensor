@@ -16,4 +16,5 @@ public interface PostService {
     void deletePost(UUID id, UUID userId);
 
 
+    List<Post> getPostsByAuthorname(String username);
 }

@@ -37,8 +37,7 @@ public class PostController {
 
     @PostMapping("/publish/{id}")
     public Post publishPost(@PathVariable UUID id){
-        Post post = postService.getPostById(id);
-        return postService.publishPost(post);
+        return postService.publishPost(postService.getPostById(id));
     }
 
     @DeleteMapping("{postId}/user/{userId}")

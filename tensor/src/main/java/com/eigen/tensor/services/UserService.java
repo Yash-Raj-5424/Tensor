@@ -2,6 +2,7 @@ package com.eigen.tensor.services;
 
 import com.eigen.tensor.domain.entities.User;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {

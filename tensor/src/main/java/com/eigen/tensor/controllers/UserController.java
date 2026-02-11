@@ -1,10 +1,13 @@
 package com.eigen.tensor.controllers;
 
+import com.eigen.tensor.domain.entities.Post;
 import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.services.PostService;
 import com.eigen.tensor.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -13,6 +16,7 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @PostMapping
     public User createUser(@RequestBody User user){
@@ -27,6 +31,11 @@ public class UserController {
     @GetMapping("/username/{username}")
     public User getUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
+    }
+
+    @GetMapping("/{username}/posts")
+    public List<Post> getPostsByUser(@PathVariable String username){
+        return postService.getPostsByAuthorname(username);
     }
 
     @DeleteMapping("/{id}")

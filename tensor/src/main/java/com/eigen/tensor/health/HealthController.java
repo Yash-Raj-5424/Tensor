@@ -1,4 +1,4 @@
-package com.eigen.tensor.controllers;
+package com.eigen.tensor.health;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
