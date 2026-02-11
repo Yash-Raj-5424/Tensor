@@ -24,8 +24,12 @@ public class PostServiceImpl implements PostService {
     private final UserService userService;
 
     @Override
-    public Post createPost(UUID authorId, Post post) {
+    public Post createPost(String title, String content, UUID authorId) {
         User author = userService.getUserById(authorId);
+
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
         post.setAuthor(author);
         post.setStatus(PostStatus.DRAFT);
 

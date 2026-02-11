@@ -33,7 +33,7 @@ public class UserController {
         return userService.getUserByUsername(username);
     }
 
-    @GetMapping("/id/{id}/posts")
+    @GetMapping("/{id}/posts")
     public List<Post> getPostsByUserId(@PathVariable UUID id){
         return postService.getPostsByUserId(id);
     }

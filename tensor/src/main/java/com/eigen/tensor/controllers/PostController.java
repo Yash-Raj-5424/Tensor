@@ -1,6 +1,7 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Post;
+import com.eigen.tensor.domain.entities.dto.CreatePostRequest;
 import com.eigen.tensor.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,9 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/author/{authorId}")
-    public Post createPost(@PathVariable UUID authorId, @RequestBody Post post) {
-        return postService.createPost(authorId, post);
+    @PostMapping
+    public Post createPost(@RequestBody CreatePostRequest request) {
+        return postService.createPost(request.getTitle(), request.getContent(), request.getAuthorId());
     }
 
     @GetMapping("{id}")
@@ -40,7 +41,7 @@ public class PostController {
         return postService.publishPost(postService.getPostById(id));
     }
 
-    @DeleteMapping("{postId}/user/{userId}")
+    @DeleteMapping("/{postId}/user/{userId}")
     public void deletePost(@PathVariable UUID postId, @PathVariable UUID userId){
         postService.deletePost(postId, userId);
     }

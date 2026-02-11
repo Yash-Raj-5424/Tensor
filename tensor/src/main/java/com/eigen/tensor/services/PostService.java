@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PostService {
-    Post createPost(UUID authorId, Post post);
+    Post createPost(String title, String content, UUID authorId);
     Post getPostById(UUID id);
     List<Post> getAllPost();
     Post updatePost(UUID id, Post post);
