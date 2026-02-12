@@ -1,6 +1,7 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Comment;
+import com.eigen.tensor.domain.entities.dto.AddCommentRequest;
 import com.eigen.tensor.services.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,9 @@ public class CommentController {
         return commentService.getCommentsByPostId(postId);
     }
 
-    @PostMapping("/user/{userId}")
-    public Comment addComment(@PathVariable UUID postId, @PathVariable UUID userId, @RequestBody Comment comment){
-        return commentService.addComment(userId, postId, comment);
+    @PostMapping
+    public Comment addComment(@PathVariable UUID postId, @RequestBody AddCommentRequest request){
+        return commentService.addComment(request.getAuthorId(), postId, request.getContent());
     }
 
     @DeleteMapping("/{commentId}/user/{userId}")

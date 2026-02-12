@@ -23,8 +23,18 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment addComment(UUID authorId, UUID postId, Comment comment) {
+    public Comment addComment(UUID authorId, UUID postId, String content) {
+        User author = userService.getUserById(authorId);
+        Post post = postService.getPostById(postId);
+
+        Comment comment = new Comment();
+
+        comment.setContent(content);
+        comment.setAuthor(author);
+        comment.setPost(post);
+
         return commentRepository.save(comment);
+
     }
 
     @Override
