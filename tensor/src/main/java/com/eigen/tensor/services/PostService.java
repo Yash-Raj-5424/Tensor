@@ -9,12 +9,12 @@ import java.util.UUID;
 
 public interface PostService {
     Post createPost(String title, String content, UUID authorId);
-    Post getPostById(UUID id);
+    Post getPostById(UUID id);  // for private use not exposed endpoint
     Post getPostBySlug(String slug);
     List<Post> getAllPost();
-    Post updatePost(UUID id, Post post);
+    Post updatePost(String slug, Post post);
     Post publishPost(Post post);
-    void deletePost(UUID id, UUID userId);
+    void deletePost(String slug, UUID userId);
 
 
     List<Post> getPostsByUserId(UUID userId);

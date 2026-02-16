@@ -3,6 +3,7 @@ package com.eigen.tensor.domain.entities;
 
 import com.eigen.tensor.domain.entities.enums.PostStatus;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Builder
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

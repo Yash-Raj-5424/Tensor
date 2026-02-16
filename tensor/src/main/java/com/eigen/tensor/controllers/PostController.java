@@ -1,7 +1,7 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Post;
-import com.eigen.tensor.domain.entities.dto.CreatePostRequest;
+import com.eigen.tensor.domain.entities.dto.PostDto;
 import com.eigen.tensor.services.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public Post createPost(@RequestBody CreatePostRequest request) {
+    public Post createPost(@RequestBody PostDto request) {
         return postService.createPost(request.getTitle(), request.getContent(), request.getAuthorId());
-    }
-
-    @GetMapping("{id}")
-    public Post getPostById(@PathVariable UUID id) {
-        return postService.getPostById(id);
     }
 
     @GetMapping("/{slug}")
@@ -36,18 +31,18 @@ public class PostController {
         return postService.getAllPost();
     }
 
-    @PutMapping("{id}")
-    public Post updatePost(@PathVariable UUID id, @RequestBody Post post){
-        return postService.updatePost(id, post);
+    @PutMapping("{slug}")
+    public Post updatePost(@PathVariable String slug, @RequestBody Post post){
+        return postService.updatePost(slug, post);
     }
 
-    @PostMapping("/publish/{id}")
-    public Post publishPost(@PathVariable UUID id){
-        return postService.publishPost(postService.getPostById(id));
+    @PostMapping("/publish/{slug}")
+    public Post publishPost(@PathVariable String slug){
+        return postService.publishPost(postService.getPostBySlug(slug));
     }
 
-    @DeleteMapping("/{postId}/user/{userId}")
-    public void deletePost(@PathVariable UUID postId, @PathVariable UUID userId){
-        postService.deletePost(postId, userId);
+    @DeleteMapping("/{slug}")
+    public void deletePost(@PathVariable String slug, @RequestBody PostDto request){
+        postService.deletePost(slug, request.getAuthorId());
     }
 }

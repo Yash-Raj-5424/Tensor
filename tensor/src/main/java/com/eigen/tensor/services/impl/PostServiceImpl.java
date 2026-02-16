@@ -24,15 +24,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post createPost(String title, String content, UUID authorId) {
-        User author = userService.getUserById(authorId);
-
-        Post post = new Post();
-        post.setTitle(title);
-        post.setContent(content);
-        post.setAuthor(author);
-        post.setStatus(PostStatus.DRAFT);
-
-        return postRepository.save(post);
+        return postRepository.save(Post.builder()
+                .title(title)
+                .content(content)
+                .status(PostStatus.DRAFT)
+                .author(userService.getUserById(authorId))
+                .build());
     }
 
     @Override
@@ -42,8 +39,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Post getPostBySlug(String slug){
-        return postRepository.findBySlug(slug)
-                .orElseThrow(() -> new RuntimeException("Post not found with slug: " + slug));
+        return postRepository.findBySlug(slug).orElseThrow(() -> new RuntimeException("Post not found with slug: " + slug));
     }
 
     @Override
@@ -57,8 +53,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(UUID id, Post post) {
-        Post oldPost = getPostById(id);
+    public Post updatePost(String slug, Post post) {
+        Post oldPost = getPostBySlug(slug);
         oldPost.setTitle(post.getTitle());
         oldPost.setContent(post.getContent());
         return postRepository.save(oldPost);
@@ -71,12 +67,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(UUID id, UUID userId) {
-        Post post = getPostById(id);
+    public void deletePost(String slug, UUID userId) {
+        Post post = getPostBySlug(slug);
         User user = userService.getUserById(userId);
 
         if(userId.equals(post.getAuthor().getId()) || user.getRole() == Role.ADMIN){
-            postRepository.deleteById(id);
+            postRepository.deleteBySlug(slug);
         } else {
             throw new RuntimeException("You don't have permission to delete this post");
         }

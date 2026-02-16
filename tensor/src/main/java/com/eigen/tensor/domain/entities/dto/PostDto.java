@@ -7,8 +7,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class AddCommentRequest {
-
+public class PostDto {
+    private String title;
     private String content;
     private UUID authorId;
 

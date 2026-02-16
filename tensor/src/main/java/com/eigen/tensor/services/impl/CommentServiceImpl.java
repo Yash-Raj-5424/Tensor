@@ -24,17 +24,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment addComment(UUID authorId, UUID postId, String content) {
-        User author = userService.getUserById(authorId);
-        Post post = postService.getPostById(postId);
-
-        Comment comment = new Comment();
-
-        comment.setContent(content);
-        comment.setAuthor(author);
-        comment.setPost(post);
-
-        return commentRepository.save(comment);
-
+        return commentRepository.save(Comment.builder()
+                .content(content)
+                .author(userService.getUserById(authorId))
+                .post(postService.getPostById(postId))
+                .build());
     }
 
     @Override
@@ -48,8 +42,6 @@ public class CommentServiceImpl implements CommentService {
         Post post = postService.getPostById(postId);
         return commentRepository.findByPostId(postId);
     }
-
-
 
     @Override
     public void deleteComment(UUID commentID, UUID userId) {
