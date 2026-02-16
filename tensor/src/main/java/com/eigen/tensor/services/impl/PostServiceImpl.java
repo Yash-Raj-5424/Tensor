@@ -5,7 +5,6 @@ import com.eigen.tensor.domain.entities.Post;
 import com.eigen.tensor.domain.entities.User;
 import com.eigen.tensor.domain.entities.enums.PostStatus;
 import com.eigen.tensor.domain.entities.enums.Role;
-import com.eigen.tensor.exception.ResourceNotFoundException;
 import com.eigen.tensor.repositories.PostRepository;
 import com.eigen.tensor.services.PostService;
 import com.eigen.tensor.services.UserService;
@@ -39,6 +38,12 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post getPostById(UUID id) {
         return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+    }
+
+    @Override
+    public Post getPostBySlug(String slug){
+        return postRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Post not found with slug: " + slug));
     }
 
     @Override

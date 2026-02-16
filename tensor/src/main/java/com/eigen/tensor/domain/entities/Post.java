@@ -24,6 +24,9 @@ public class Post {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @Column(nullable = false, unique = true, length = 200)
+    private String slug;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     PostStatus status;
