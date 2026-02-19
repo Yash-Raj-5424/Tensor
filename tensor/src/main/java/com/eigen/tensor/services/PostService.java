@@ -1,22 +1,22 @@
 package com.eigen.tensor.services;
 
 import com.eigen.tensor.domain.entities.Post;
-import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.domain.entities.dto.PostRequestDto;
+import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface PostService {
-    Post createPost(String title, String content, UUID authorId);
+    PostResponseDto createPost(String title, String content, UUID authorId);
     String generateSlug(String title);
     Post getPostById(UUID id);  // for private use not exposed endpoint
-    Post getPostBySlug(String slug);
-    List<Post> getAllPost();
-    Post updatePost(String slug, Post post);
+    PostResponseDto getPostBySlug(String slug);
+    Post updatePost(UUID id, Post post);
     Post publishPost(Post post);
-    void deletePost(String slug, UUID userId);
+    void deletePost(UUID postId, UUID userId);
 
+    PostResponseDto mapToDto(Post post);
 
-    List<Post> getPostsByUserId(UUID userId);
+    List<PostResponseDto> getPostsByUserId(UUID userId);
 }

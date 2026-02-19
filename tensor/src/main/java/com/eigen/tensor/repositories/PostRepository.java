@@ -1,6 +1,7 @@
 package com.eigen.tensor.repositories;
 
 import com.eigen.tensor.domain.entities.Post;
+import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +13,8 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
 
-    List<Post> findByAuthorId(UUID userId);
+    List<PostResponseDto> findByAuthorId(UUID userId);
     Optional<Post> findBySlug(String slug);
-    void deleteBySlug(String slug);
+
 
 }

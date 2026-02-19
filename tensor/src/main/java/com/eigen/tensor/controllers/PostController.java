@@ -1,13 +1,14 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Post;
-import com.eigen.tensor.domain.entities.dto.PostDto;
+import com.eigen.tensor.domain.entities.dto.PostRequestDto;
+import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 import com.eigen.tensor.services.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -17,13 +18,13 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public Post createPost(@RequestBody PostDto request) {
+    public Post createPost(@RequestBody PostRequestDto request) {
         return postService.createPost(request.getTitle(), request.getContent(), request.getAuthorId());
     }
 
     @GetMapping("/{slug}")
-    public Post getPostBySlug(@PathVariable String slug) {
-        return postService.getPostBySlug(slug);
+    public ResponseEntity<PostResponseDto> getPostBySlug(@PathVariable String slug) {
+        return ResponseEntity.ok(postService.getPostBySlug(slug));
     }
 
     @GetMapping
@@ -42,7 +43,7 @@ public class PostController {
     }
 
     @DeleteMapping("/{slug}")
-    public void deletePost(@PathVariable String slug, @RequestBody PostDto request){
+    public void deletePost(@PathVariable String slug, @RequestBody PostRequestDto request){
         postService.deletePost(slug, request.getAuthorId());
     }
 }
