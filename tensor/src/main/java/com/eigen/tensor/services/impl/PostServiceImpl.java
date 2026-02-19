@@ -23,9 +23,21 @@ public class PostServiceImpl implements PostService {
     private final UserService userService;
 
     @Override
+    public String generateSlug(String title) {
+        String baseSlug = title.toLowerCase()
+                .trim()
+                .replaceAll("[^a-z0-9\\s]", "")
+                .replaceAll("[\\s]", "-");
+
+        String suffix = UUID.randomUUID().toString().substring(0, 6);
+        return baseSlug + "-" + suffix;
+    }
+
+    @Override
     public Post createPost(String title, String content, UUID authorId) {
         return postRepository.save(Post.builder()
                 .title(title)
+                .slug(generateSlug(title))
                 .content(content)
                 .status(PostStatus.DRAFT)
                 .author(userService.getUserById(authorId))

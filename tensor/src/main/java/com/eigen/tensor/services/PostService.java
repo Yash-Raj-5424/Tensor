@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface PostService {
     Post createPost(String title, String content, UUID authorId);
+    String generateSlug(String title);
     Post getPostById(UUID id);  // for private use not exposed endpoint
     Post getPostBySlug(String slug);
     List<Post> getAllPost();
