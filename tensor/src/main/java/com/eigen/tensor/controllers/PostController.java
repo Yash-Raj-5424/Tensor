@@ -18,8 +18,8 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public Post createPost(@RequestBody PostRequestDto request) {
-        return postService.createPost(request.getTitle(), request.getContent(), request.getAuthorId());
+    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto request) {
+        return ResponseEntity.ok(postService.createPost(request));
     }
 
     @GetMapping("/{slug}")
@@ -27,23 +27,19 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostBySlug(slug));
     }
 
-    @GetMapping
-    public List<Post> getAllPost(){
-        return postService.getAllPost();
-    }
 
     @PutMapping("{slug}")
-    public Post updatePost(@PathVariable String slug, @RequestBody Post post){
-        return postService.updatePost(slug, post);
+    public ResponseEntity<PostResponseDto> updatePost(@RequestBody PostRequestDto request, @RequestBody Post post){
+        return ResponseEntity.ok(postService.updatePost(request.getPostId(), post));
     }
 
     @PostMapping("/publish/{slug}")
-    public Post publishPost(@PathVariable String slug){
-        return postService.publishPost(postService.getPostBySlug(slug));
+    public ResponseEntity<PostResponseDto> publishPost(@PathVariable String slug){
+        return ResponseEntity.ok(postService.publishPost(slug));
     }
 
     @DeleteMapping("/{slug}")
-    public void deletePost(@PathVariable String slug, @RequestBody PostRequestDto request){
-        postService.deletePost(slug, request.getAuthorId());
+    public void deletePost(@RequestBody PostRequestDto request){
+        postService.deletePost(request.getPostId(), request.getAuthorId());
     }
 }

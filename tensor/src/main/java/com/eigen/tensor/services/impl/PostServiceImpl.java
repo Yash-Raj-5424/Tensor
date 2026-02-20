@@ -3,6 +3,7 @@ package com.eigen.tensor.services.impl;
 
 import com.eigen.tensor.domain.entities.Post;
 import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.domain.entities.dto.PostRequestDto;
 import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 import com.eigen.tensor.domain.entities.enums.PostStatus;
 import com.eigen.tensor.domain.entities.enums.Role;
@@ -45,15 +46,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDto createPost(String title, String content, UUID authorId) {
-        Post post =  postRepository.save(Post.builder()
-                .title(title)
-                .slug(generateSlug(title))
-                .content(content)
+    public PostResponseDto createPost(PostRequestDto request) {
+        Post post = Post.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .author(userService.getUserById(request.getAuthorId()))
+                .slug(generateSlug(request.getTitle()))
                 .status(PostStatus.DRAFT)
-                .author(userService.getUserById(authorId))
-                .build());
-
+                .build();
         return mapToDto(post);
     }
 
@@ -68,25 +68,25 @@ public class PostServiceImpl implements PostService {
         return mapToDto(post);
     }
 
-
-
     @Override
     public List<PostResponseDto> getPostsByUserId(UUID userId) {
         return postRepository.findByAuthorId(userId);
     }
 
     @Override
-    public Post updatePost(UUID id, Post post) {
+    public PostResponseDto updatePost(UUID id, Post post) {
         Post oldPost = getPostById(id);
         oldPost.setTitle(post.getTitle());
         oldPost.setContent(post.getContent());
-        return postRepository.save(oldPost);
+        return mapToDto(postRepository.save(oldPost));
     }
 
     @Override
-    public Post publishPost(Post post) {
+    public PostResponseDto publishPost(String slug) {
+        Post post = postRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Post not found with slug: " + slug));
         post.setStatus(PostStatus.PUBLISHED);
-        return postRepository.save(post);
+        return mapToDto(postRepository.save(post));
     }
 
     @Override

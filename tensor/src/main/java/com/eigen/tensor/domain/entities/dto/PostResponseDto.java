@@ -13,6 +13,7 @@ public class PostResponseDto {
 
     private String title;
     private String content;
+    private String slug;
     private String authorName;
     private LocalDateTime createdAt;
 

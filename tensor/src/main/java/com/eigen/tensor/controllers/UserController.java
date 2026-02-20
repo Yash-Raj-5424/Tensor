@@ -2,9 +2,11 @@ package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Post;
 import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 import com.eigen.tensor.services.PostService;
 import com.eigen.tensor.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +36,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/posts")
-    public List<Post> getPostsByUserId(@PathVariable UUID id){
-        return postService.getPostsByUserId(id);
+    public ResponseEntity<List<PostResponseDto>> getPostsByUserId(@PathVariable UUID id){
+        return ResponseEntity.ok(postService.getPostsByUserId(id));
     }
 
     @DeleteMapping("/{id}")
