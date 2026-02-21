@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
 
-    List<Comment> findByPostId(UUID postId);
+    List<Comment> findByPostSlug(String slug);
 }

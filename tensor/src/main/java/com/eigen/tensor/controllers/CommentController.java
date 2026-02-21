@@ -1,9 +1,11 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Comment;
-import com.eigen.tensor.domain.entities.dto.CommentRequestDto;
+import com.eigen.tensor.domain.entities.dto.AddCommentRequestDto;
+import com.eigen.tensor.domain.entities.dto.CommentResponseDto;
 import com.eigen.tensor.services.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,23 +18,23 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping("/{commentId}")
-    public Comment getCommentById(@PathVariable UUID commentId){
-        return commentService.getCommentById(commentId);
+    public ResponseEntity<CommentResponseDto> getCommentById(@PathVariable UUID commentId){
+        return ResponseEntity.ok(commentService.getCommentById(commentId));
     }
 
     @GetMapping
-    public List<Comment> getCommentsByPostId(@PathVariable UUID postId){
-        return commentService.getCommentsByPostId(postId);
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostSlug(@PathVariable String slug){
+        return ResponseEntity.ok(commentService.getCommentsByPostSlug(slug));
     }
 
     @PostMapping
-    public Comment addComment(@PathVariable UUID postId, @RequestBody CommentRequestDto request){
-        return commentService.addComment(request.getAuthorId(), postId, request.getContent());
+    public CommentResponseDto addComment(@RequestBody AddCommentRequestDto request){
+        return commentService.addComment(request);
     }
 
     @DeleteMapping("/{commentId}")
-    public void deleteComment(@PathVariable UUID commentId, @RequestBody CommentRequestDto request){
-        commentService.deleteComment(commentId, request.getAuthorId());
+    public void deleteComment(@PathVariable UUID commentId){
+        commentService.deleteComment(commentId);
     }
 
 
