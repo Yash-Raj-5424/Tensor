@@ -10,6 +10,6 @@ public interface UserService {
     User createUser(User user);
     User getUserById(UUID userId);
     User getUserByUsername(String username);
-    void deleteUser(UUID userId);
+    void deleteUserById(UUID userId);
 
 }

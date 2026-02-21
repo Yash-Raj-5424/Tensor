@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface PostRepository extends JpaRepository<Post, UUID> {
 
 
-    List<PostResponseDto> findByAuthorId(UUID userId);
+    List<Post> findByAuthorId(UUID authorId);
     Optional<Post> findBySlug(String slug);
 
 
