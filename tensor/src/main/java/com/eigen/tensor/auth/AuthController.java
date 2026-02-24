@@ -1,6 +1,7 @@
 package com.eigen.tensor.auth;
 
 import com.eigen.tensor.domain.entities.User;
+import com.eigen.tensor.domain.entities.dto.LoginResponseDto;
 import com.eigen.tensor.domain.entities.enums.Role;
 import com.eigen.tensor.repositories.UserRepository;
 import com.eigen.tensor.services.impl.UserDetailsServiceImpl;
@@ -56,7 +57,7 @@ public class AuthController {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
-            return ResponseEntity.ok("token: " + jwtUtil.generateToken(userDetails));
+            return ResponseEntity.ok(new LoginResponseDto(jwtUtil.generateToken(userDetails)).getToken());
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
