@@ -3,18 +3,19 @@ package com.eigen.tensor.auth;
 import com.eigen.tensor.domain.entities.User;
 import com.eigen.tensor.domain.entities.enums.Role;
 import com.eigen.tensor.repositories.UserRepository;
+import com.eigen.tensor.services.impl.UserDetailsServiceImpl;
+import com.eigen.tensor.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.naming.AuthenticationException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -39,6 +40,9 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully");
     }
 
+    private final UserDetailsServiceImpl userDetailsService;
+    private final JwtUtil jwtUtil;
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user){
 
@@ -49,10 +53,14 @@ public class AuthController {
                             user.getPassword()
                     )
             );
-            return ResponseEntity.ok("Login successful");
+
+            UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+
+            return ResponseEntity.ok("token: " + jwtUtil.generateToken(userDetails));
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Invalid username or password");
         }
     }
 
