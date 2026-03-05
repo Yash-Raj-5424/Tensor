@@ -12,4 +12,5 @@ public interface UserService {
     User getUserByUsername(String username);
     void deleteUserById(UUID userId);
 
+    User getCurrentUser();
 }

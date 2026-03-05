@@ -7,9 +7,9 @@ import com.eigen.tensor.exception.ResourceNotFoundException;
 import com.eigen.tensor.repositories.UserRepository;
 import com.eigen.tensor.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -41,5 +41,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User getCurrentUser(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getUserByUsername(username);
     }
 }

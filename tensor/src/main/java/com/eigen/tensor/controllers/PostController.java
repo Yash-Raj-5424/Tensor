@@ -1,10 +1,12 @@
 package com.eigen.tensor.controllers;
 
 import com.eigen.tensor.domain.entities.Post;
+import com.eigen.tensor.domain.entities.User;
 import com.eigen.tensor.domain.entities.dto.CreatePostRequestDto;
 import com.eigen.tensor.domain.entities.dto.PostResponseDto;
 import com.eigen.tensor.domain.entities.dto.UpdatePostRequestDto;
 import com.eigen.tensor.services.PostService;
+import com.eigen.tensor.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@RequestBody CreatePostRequestDto request) {
@@ -46,7 +49,14 @@ public class PostController {
     }
 
     @DeleteMapping("/{slug}")
-    public void deletePost(@PathVariable String slug){
+    public ResponseEntity<Void> deletePost(@PathVariable String slug ){
+
+        User currentUser = userService.getCurrentUser();
+        Post post = postService.getPostBySlug(slug);
+        if (!post.getAuthor().getId().equals(currentUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         postService.deletePost(slug);
+        return ResponseEntity.noContent().build();
     }
 }
