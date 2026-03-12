@@ -50,13 +50,13 @@ public class PostController {
 
     @DeleteMapping("/{slug}")
     public ResponseEntity<Void> deletePost(@PathVariable String slug ){
-
         User currentUser = userService.getCurrentUser();
         Post post = postService.getPostBySlug(slug);
         if (!post.getAuthor().getId().equals(currentUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } else {
+            postService.deletePost(slug);
+            return ResponseEntity.noContent().build();
         }
-        postService.deletePost(slug);
-        return ResponseEntity.noContent().build();
     }
 }
